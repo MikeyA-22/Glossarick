@@ -3,7 +3,7 @@ import './CardMaker.css'
 import vocabCards from './VocabCards.json'
 
 
-const API_KEY = 'AIzaSyBLexTtLXx57N7q4y70PqkBc84_8Jg2qOk';
+
 
 const translate = async (text) => {
     if (!text) return '';
