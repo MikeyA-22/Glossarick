@@ -5,6 +5,8 @@ import Flashcard from "./Flashcard.jsx";
 
 
 
+const API_URL = 'http://localhost:3000/flashcards';
+
 // Function to create a list of cards in the local storage
 function CardList({backToList, editCard, startQuiz}) {
 
@@ -13,7 +15,7 @@ function CardList({backToList, editCard, startQuiz}) {
     const [error, setError] = useState(null);
     useEffect(() =>{
         const doFetch = async () => {
-            const [data, error] = await fetchData('http://localhost:3000/flashcards');
+            const [data, error] = await fetchData(`${API_URL}`);
             if (data) setCards(data);
             if (error) setError(error);
 
@@ -22,7 +24,14 @@ function CardList({backToList, editCard, startQuiz}) {
     }, []);
 
 
-
+    //update function to update VocabCards.json using DELETE method in json format if resp.ok is true then successfully delete else not success
+    async function DeleteData(id) {
+        const resp = await fetch(`${API_URL}/${id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        return resp.ok;
+    }
 
 
 
@@ -37,7 +46,9 @@ function CardList({backToList, editCard, startQuiz}) {
     function deleteCard(id) {
         const updated = cards.filter(card => card.id !== id);
         setCards(updated);
-        localStorage.setItem('vocabCards', JSON.stringify(updated));
+        /*localStorage.setItem('vocabCards', JSON.stringify(updated));*/
+        DeleteData(id);
+
 
     }
 

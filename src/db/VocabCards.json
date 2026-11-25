@@ -1,12 +1,6 @@
 {
   "flashcards": [
     {
-      "id": "0",
-      "english": "What",
-      "yoruba": "Kini",
-      "retention": 5
-    },
-    {
       "id": "1",
       "english": "I started from january",
       "yoruba": "mo ti bere lati sere",
@@ -42,5 +36,6 @@
       "yoruba": "Kilo tu fe",
       "retention": 1
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
