@@ -1,12 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import fetchData from "./utils/fetchData.jsx";
+import Flashcard from "./Flashcard.jsx";
+
 
 
 
 // Function to create a list of cards in the local storage
 function CardList({backToList, editCard, startQuiz}) {
-    const [cards, setCards] = useState(() =>
-        JSON.parse(localStorage.getItem('vocabCards')) || []
-    );
+
+    // keep cards blank, fetch it, then set it from there
+    const [cards, setCards] = useState([]);
+    const [error, setError] = useState(null);
+    useEffect(() =>{
+        const doFetch = async () => {
+            const [data, error] = await fetchData('http://localhost:3000/flashcards');
+            if (data) setCards(data);
+            if (error) setError(error);
+
+        };
+        doFetch();
+    }, []);
+
+
+
+
+
 
     // Clear all cards, TODO: Make this usable
     function handleClear() {
@@ -25,23 +43,23 @@ function CardList({backToList, editCard, startQuiz}) {
 
 
 
-    // Classic react return
-    return (
-        <>
-            <ul>
-                {cards.map((card, index) => (
-                    <p key={index}>
-                        <span>{card.yoruba} </span> : <span className="strike">{card.english}</span>
-                        <button onClick={() => editCard(card)}>edit</button>
-                        <button onClick={() => deleteCard(card.id)}>delete</button>
-                    </p>
-                ))}
-            </ul>
+    if (error) return <p>{error.message}. Refresh to try again.</p>
 
-            <button className='button' onClick={backToList}>Add new Card</button>
-            <button className='button' onClick={startQuiz}>Start Quiz</button>
-        </>
-    )
+    // Classic react return
+    return <>
+        <h3>My Vocab</h3>
+        <ul>
+
+            {
+                cards.map((card) => (<Flashcard key = {card.id} flashcard = {card} clickable={false} editCard={editCard} deleteCard={deleteCard}/>))
+
+
+            }
+        </ul>
+
+        <button className='button' onClick={backToList}>Add new Card</button>
+        <button className='button' onClick={startQuiz}>Start Quiz</button>
+    </>
 }
 
 
