@@ -1,9 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import './CardMaker.css'
-import vocabCards from './VocabCards.json'
-
-
-
+import vocabCards from './db/VocabCards.json'
 
 const translate = async (text) => {
     if (!text) return '';
